@@ -1,2 +1,2 @@
 # Fisher Time Control
-Project for TRTiPO
+The project for the calculation of the visitors cafe hourly.
