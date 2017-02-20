@@ -7,13 +7,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.time.LocalTime;
 
 public class MainAppController {
-  private static ObservableList<Client> clientData = FXCollections.observableArrayList();
+  public static ObservableList<Client> clientData = FXCollections.observableArrayList();
   @FXML
   private TableView<Client> clientTable;
   @FXML
@@ -39,20 +40,20 @@ public class MainAppController {
   @FXML
   public void showAddDialog() throws Exception {
     Stage addStage = new Stage();
-    Parent root = (Parent) FXMLLoader.load(this.getClass().getResource("CreateDialog.fxml"));
+    Parent root = FXMLLoader.load(this.getClass().getResource("XML_Files/CreateDialog.fxml"));
     Stage primaryStage = (Stage) this.addUserButton.getScene().getWindow();
+    addStage.getIcons().add(new Image("resource/fisher.png"));
     addStage.initModality(Modality.WINDOW_MODAL);
     addStage.initOwner(primaryStage);
     addStage.setTitle("Добавить новых посетителей");
-    addStage.setScene(new Scene(root, 300.0D, 200.0D));
+    addStage.setScene(new Scene(root, 250, 160));
     addStage.setResizable(false);
-    addStage.show();
+
+    addStage.showAndWait();
   }
 
   @FXML
   private void initialize() {
-    clientData.add(new Client("Mic", 1));
-    clientData.add(new Client("Rec", 2, LocalTime.of(13, 15)));
     this.nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
     this.numberColumn.setCellValueFactory(new PropertyValueFactory("number"));
     this.clientTable.setItems(clientData);
@@ -91,8 +92,8 @@ public class MainAppController {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.initOwner(this.addUserButton.getScene().getWindow());
       alert.setTitle("No Selection");
-      alert.setHeaderText("No Person Selected");
-      alert.setContentText("Please select a person in the table.");
+      alert.setHeaderText("Посетитель не выбран");
+      alert.setContentText("Пожалуйста выберете посетителся в списке");
       alert.showAndWait();
     }
   }

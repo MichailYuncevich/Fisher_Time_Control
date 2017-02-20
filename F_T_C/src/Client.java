@@ -12,10 +12,10 @@ public class Client extends TimeUtil {
   private Integer number;
   private LocalTime startTime;
 
-  public Client(String name, Integer number) {
-    this.name = new String(name);
-    this.number = new Integer(number);
-    this.startTime = LocalTime.now(Clock.systemDefaultZone());
+  public Client(Client oldClient) {
+    this.name = oldClient.name;
+    this.number = oldClient.number;
+    this.startTime = oldClient.startTime;
   }
 
   public Client(String name, Integer number, LocalTime time) {
@@ -53,7 +53,7 @@ public class Client extends TimeUtil {
     double Bill = 0;
     int hour = nowTime.getHour() - startTime.getHour();
     int minute = nowTime.getMinute() - startTime.getMinute();
-    if (hour > 3)
+    if (hour > 3 || hour < 0)
       Bill = Setting.maxBill;
     else if (hour < 1)
       Bill = Setting.firstHour;
