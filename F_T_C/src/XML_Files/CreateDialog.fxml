@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CreateController">
    <children>
       <GridPane layoutX="25.0" layoutY="27.0" AnchorPane.topAnchor="20.0">
         <columnConstraints>
@@ -25,9 +25,9 @@
             <Label text="Имя" />
             <Label text="Количество" GridPane.rowIndex="1" />
             <Label text="Время" GridPane.rowIndex="2" />
-            <TextField fx:id="nameField" GridPane.columnIndex="1" />
-            <TextField fx:id="numberField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="timeField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="nameAddField" GridPane.columnIndex="1" />
+            <TextField fx:id="numberAddField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="timeAddField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <Button layoutX="43.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleOk" prefHeight="25.0" prefWidth="75.0" text="ОК" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="40.0" />

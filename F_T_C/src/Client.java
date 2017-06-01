@@ -1,4 +1,3 @@
-import java.time.Clock;
 import java.time.LocalTime;
 
 public class Client extends TimeUtil {
@@ -10,6 +9,7 @@ public class Client extends TimeUtil {
 
   private String name;
   private Integer number;
+  private String time;
   private LocalTime startTime;
 
   public Client(Client oldClient) {
@@ -18,10 +18,11 @@ public class Client extends TimeUtil {
     this.startTime = oldClient.startTime;
   }
 
-  public Client(String name, Integer number, LocalTime time) {
-    this.name = new String(name);
-    this.number = new Integer(number);
-    this.startTime = time;
+  public Client(String nname, Integer nnumber, LocalTime ntime) {
+    this.name = nname;
+    this.number = nnumber;
+    this.startTime = ntime;
+    this.time = TimeUtil.getStringTime(ntime);
   }
 
   public String getName() {
@@ -41,16 +42,17 @@ public class Client extends TimeUtil {
   }
 
   public String getTime() {
-    return getStringTime(startTime);
+    return TimeUtil.getStringTime(startTime);
   }
 
   public void setTime(LocalTime time) {
-    this.startTime = time;
+    startTime = time;
+    this.time = TimeUtil.getStringTime(time);
   }
 
   public Double getBill() {
     LocalTime nowTime = LocalTime.now();
-    double Bill = 0;
+    double Bill;
     int hour = nowTime.getHour() - startTime.getHour();
     int minute = nowTime.getMinute() - startTime.getMinute();
     if (hour > 3 || hour < 0)

@@ -1,4 +1,3 @@
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -6,21 +5,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.time.LocalTime;
 
 public class MainAppController {
   public static ObservableList<Client> clientData = FXCollections.observableArrayList();
+
   @FXML
   private TableView<Client> clientTable;
   @FXML
   private TableColumn<Client, String> nameColumn;
   @FXML
-  private TableColumn<Client, String> numberColumn;
+  private TableColumn<Client, Integer> numberColumn;
+  @FXML
+  private TableColumn<Client, String> timeColumn;
 
   @FXML
   private Label nameLabel;
@@ -34,14 +38,15 @@ public class MainAppController {
   private Label billAll;
   @FXML
   private Label billLabel;
+
   @FXML
-  private Button addUserButton;
+  private SplitPane splitPane;
 
   @FXML
   public void showAddDialog() throws Exception {
     Stage addStage = new Stage();
     Parent root = FXMLLoader.load(this.getClass().getResource("XML_Files/CreateDialog.fxml"));
-    Stage primaryStage = (Stage) this.addUserButton.getScene().getWindow();
+    Stage primaryStage = (Stage) this.nameLabel.getScene().getWindow();
     addStage.getIcons().add(new Image("resource/fisher.png"));
     addStage.initModality(Modality.WINDOW_MODAL);
     addStage.initOwner(primaryStage);
@@ -53,10 +58,50 @@ public class MainAppController {
   }
 
   @FXML
+  public void showEditDialog() throws Exception {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("XML_Files/EditDialog.fxml"));
+    Parent root = loader.load();
+    EditController ctrl = loader.getController();
+    ctrl.initEdit(clientTable.getSelectionModel().getSelectedItem(), clientTable.getSelectionModel().getSelectedIndex());
+
+    Stage editStage = new Stage();
+    Stage primaryStage = (Stage) this.nameLabel.getScene().getWindow();
+    editStage.getIcons().add(new Image("resource/fisher.png"));
+    editStage.initModality(Modality.WINDOW_MODAL);
+    editStage.initOwner(primaryStage);
+    editStage.setTitle("Изменение посетителей");
+    editStage.setScene(new Scene(root, 250, 200));
+    editStage.setResizable(false);
+
+    editStage.showAndWait();
+  }
+
+  @FXML
+  public void showBillDialog() throws Exception {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("XML_Files/BillDialog.fxml"));
+    Parent root = loader.load();
+    BillController ctrl = loader.getController();
+    ctrl.initBill(clientTable.getSelectionModel().getSelectedItem(), clientTable.getSelectionModel().getSelectedIndex());
+
+    Stage billStage = new Stage();
+    Stage primaryStage = (Stage) this.nameLabel.getScene().getWindow();
+    billStage.getIcons().add(new Image("resource/fisher.png"));
+    billStage.initModality(Modality.WINDOW_MODAL);
+    billStage.initOwner(primaryStage);
+    billStage.setTitle("Расчет посетителей");
+    billStage.setScene(new Scene(root, 250, 200));
+    billStage.setResizable(false);
+    billStage.setUserData(clientTable.getSelectionModel().getSelectedItem());
+
+    billStage.showAndWait();
+  }
+
+  @FXML
   private void initialize() {
-    this.nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
-    this.numberColumn.setCellValueFactory(new PropertyValueFactory("number"));
-    this.clientTable.setItems(clientData);
+    timeColumn.setCellValueFactory(new PropertyValueFactory("time"));
+    nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
+    numberColumn.setCellValueFactory(new PropertyValueFactory("number"));
+    clientTable.setItems(clientData);
     clientTable.getSelectionModel().selectedItemProperty().addListener(
         (observable, oldValue, newValue) -> showClientDetails(newValue));
   }
@@ -66,7 +111,7 @@ public class MainAppController {
       nameLabel.setText(client.getName());
       numberLabel.setText(client.getNumber().toString());
       startTime.setText(client.getTime());
-      nowTime.setText(client.getStringNowTime());
+      nowTime.setText(TimeUtil.getStringNowTime());
       billLabel.setText(client.getBill().toString());
       Double all = client.getNumber() * client.getBill();
       billAll.setText(all.toString());
@@ -90,7 +135,7 @@ public class MainAppController {
       clientData.remove(index);
     } else {
       Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.initOwner(this.addUserButton.getScene().getWindow());
+      alert.initOwner(this.nameLabel.getScene().getWindow());
       alert.setTitle("No Selection");
       alert.setHeaderText("Посетитель не выбран");
       alert.setContentText("Пожалуйста выберете посетителся в списке");
