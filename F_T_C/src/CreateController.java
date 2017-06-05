@@ -4,7 +4,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalTime;
 
-public class CreateController extends CheckInput {
+public class CreateController {
   @FXML
   private TextField nameAddField;
   @FXML
@@ -14,12 +14,12 @@ public class CreateController extends CheckInput {
 
   @FXML
   private void initialize() {
-    timeAddField.setText(Client.getStringNowTime());
+    timeAddField.setText(TimeUtil.getStringNowTime());
   }
 
   @FXML
   private void handleOk() throws InterruptedException {
-    if (checkInput(nameAddField, numberAddField, timeAddField)) {
+    if (CheckInput.checkInput(nameAddField, numberAddField, timeAddField)) {
       MainAppController.addClient(nameAddField.getText(),
           Integer.parseInt(numberAddField.getText()),
           LocalTime.parse(timeAddField.getText()));

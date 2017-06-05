@@ -4,8 +4,8 @@ import javafx.scene.control.TextField;
 import java.time.DateTimeException;
 import java.time.LocalTime;
 
-public class CheckInput {
-  public boolean checkInput(TextField nameField, TextField numberField, TextField timeField) {
+class CheckInput {
+  static boolean checkInput(TextField nameField, TextField numberField, TextField timeField) {
     String errorMessage = "";
     if (nameField.getText() == null || nameField.getText().length() == 0) {
       errorMessage += "Введите имя!\n";
@@ -16,7 +16,7 @@ public class CheckInput {
       try {
         Integer.parseInt(numberField.getText());
       } catch (NumberFormatException e) {
-        errorMessage += "Введите число!\n";
+        errorMessage += "Введите количество числом!\n";
       }
     }
     if (timeField.getText() == null || timeField.getText().length() == 0) {
@@ -31,13 +31,16 @@ public class CheckInput {
     if (errorMessage.length() == 0) {
       return true;
     } else {
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.initOwner(nameField.getScene().getWindow());
-      alert.setTitle("Invalid Fields");
-      alert.setHeaderText("Пожалуйста введите коректное значение");
-      alert.setContentText(errorMessage);
-      alert.showAndWait();
+      alertMessage("Invalid Fields", "Пожалуйста введите коректное значение", errorMessage);
       return false;
     }
+  }
+
+  static void alertMessage(String title, String headText, String contentText){
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle(title);
+    alert.setHeaderText(headText);
+    alert.setContentText(contentText);
+    alert.showAndWait();
   }
 }

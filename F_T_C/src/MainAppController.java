@@ -40,9 +40,6 @@ public class MainAppController {
   private Label billLabel;
 
   @FXML
-  private SplitPane splitPane;
-
-  @FXML
   public void showAddDialog() throws Exception {
     Stage addStage = new Stage();
     Parent root = FXMLLoader.load(this.getClass().getResource("XML_Files/CreateDialog.fxml"));
@@ -55,6 +52,7 @@ public class MainAppController {
     addStage.setResizable(false);
 
     addStage.showAndWait();
+    FileUtil.writeClientData(clientData);
   }
 
   @FXML
@@ -98,6 +96,9 @@ public class MainAppController {
 
   @FXML
   private void initialize() {
+    if (FileUtil.checkFile()){
+      clientData = FileUtil.readClientData();
+    }
     timeColumn.setCellValueFactory(new PropertyValueFactory("time"));
     nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
     numberColumn.setCellValueFactory(new PropertyValueFactory("number"));
@@ -111,7 +112,7 @@ public class MainAppController {
       nameLabel.setText(client.getName());
       numberLabel.setText(client.getNumber().toString());
       startTime.setText(client.getTime());
-      nowTime.setText(TimeUtil.getStringNowTime());
+      nowTime.setText(client.getCurrTime());
       billLabel.setText(client.getBill().toString());
       Double all = client.getNumber() * client.getBill();
       billAll.setText(all.toString());
@@ -134,12 +135,8 @@ public class MainAppController {
     if (index >= 0) {
       clientData.remove(index);
     } else {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.initOwner(this.nameLabel.getScene().getWindow());
-      alert.setTitle("No Selection");
-      alert.setHeaderText("Посетитель не выбран");
-      alert.setContentText("Пожалуйста выберете посетителся в списке");
-      alert.showAndWait();
+      CheckInput.alertMessage("No Selection","Посетитель не выбран","Пожалуйста выберете посетителся в списке");
+
     }
   }
 }

@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class Client extends TimeUtil {
+public class Client implements Serializable {
   public static class Setting {
     static int maxBill = 12;
     static int firstHour = 3;
@@ -16,6 +17,14 @@ public class Client extends TimeUtil {
     this.name = oldClient.name;
     this.number = oldClient.number;
     this.startTime = oldClient.startTime;
+    this.time = oldClient.time;
+  }
+
+  public Client() {
+    this.name = null;
+    this.number = null;
+    this.startTime = null;
+    this.time = null;
   }
 
   public Client(String nname, Integer nnumber, LocalTime ntime) {
@@ -44,6 +53,8 @@ public class Client extends TimeUtil {
   public String getTime() {
     return TimeUtil.getStringTime(startTime);
   }
+
+  public String getCurrTime() { return TimeUtil.getStringCurrTime(startTime); }
 
   public void setTime(LocalTime time) {
     startTime = time;
