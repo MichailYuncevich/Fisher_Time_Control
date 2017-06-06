@@ -39,6 +39,7 @@ class FileUtil {
 
   static void writeClientData(ObservableList<Client> clientData) {
     if (clientData.isEmpty()){
+      clientFile.delete();
       return;
     }
     try {
