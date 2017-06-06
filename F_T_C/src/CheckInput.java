@@ -22,11 +22,13 @@ class CheckInput {
     if (timeField.getText() == null || timeField.getText().length() == 0) {
       errorMessage += "Введите время!\n";
     } else {
-      try {
-        LocalTime.parse(timeField.getText());
-      } catch (DateTimeException e) {
-        errorMessage += "Введите время в формате HH:mm!\n";
-      }
+        try {
+          if ((LocalTime.now().toSecondOfDay()- LocalTime.parse(timeField.getText()).toSecondOfDay())<0){
+            errorMessage += "Указанное время позже текущего!\n";
+          }
+        } catch (DateTimeException e) {
+          errorMessage += "Введите время в формате HH:mm!\n";
+        }
     }
     if (errorMessage.length() == 0) {
       return true;

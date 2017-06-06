@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalTime;
 
 public class Client implements Serializable {
@@ -13,13 +14,6 @@ public class Client implements Serializable {
   private String time;
   private LocalTime startTime;
 
-  public Client(Client oldClient) {
-    this.name = oldClient.name;
-    this.number = oldClient.number;
-    this.startTime = oldClient.startTime;
-    this.time = oldClient.time;
-  }
-
   public Client() {
     this.name = null;
     this.number = null;
@@ -27,27 +21,26 @@ public class Client implements Serializable {
     this.time = null;
   }
 
-  public Client(String nname, Integer nnumber, LocalTime ntime) {
-    this.name = nname;
-    this.number = nnumber;
-    this.startTime = ntime;
-    this.time = TimeUtil.getStringTime(ntime);
+  public Client(Client oldClient) {
+    this.name = oldClient.name;
+    this.number = oldClient.number;
+    this.startTime = oldClient.startTime;
+    this.time = oldClient.time;
+  }
+
+  public Client(String newName, Integer newNumber, LocalTime newTime) {
+    this.name = newName;
+    this.number = newNumber;
+    this.startTime = newTime;
+    this.time = TimeUtil.getStringTime(newTime);
   }
 
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public Integer getNumber() {
     return number;
-  }
-
-  public void setNumber(Integer number) {
-    this.number = number;
   }
 
   public String getTime() {
@@ -55,6 +48,14 @@ public class Client implements Serializable {
   }
 
   public String getCurrTime() { return TimeUtil.getStringCurrTime(startTime); }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setNumber(Integer number) {
+    this.number = number;
+  }
 
   public void setTime(LocalTime time) {
     startTime = time;
@@ -68,10 +69,13 @@ public class Client implements Serializable {
     int minute = nowTime.getMinute() - startTime.getMinute();
     if (hour > 3 || hour < 0)
       Bill = Setting.maxBill;
-    else if (hour < 1)
+    else if ((hour < 1)||(minute < 0))
       Bill = Setting.firstHour;
-    else
-      Bill = (hour * 60 + minute) * Setting.coastMinute;
+    else {
+      BigDecimal timeBill= new BigDecimal(hour * 60 + minute);
+      BigDecimal coastMinBill = new BigDecimal(Setting.coastMinute);
+      Bill = coastMinBill.multiply(timeBill).setScale(3, BigDecimal.ROUND_DOWN).doubleValue();
+    }
     return Bill;
   }
 }

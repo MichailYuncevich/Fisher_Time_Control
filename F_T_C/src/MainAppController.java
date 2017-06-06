@@ -11,11 +11,10 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.time.LocalTime;
 
 public class MainAppController {
-  public static ObservableList<Client> clientData = FXCollections.observableArrayList();
+  static ObservableList<Client> clientData = FXCollections.observableArrayList();
 
   @FXML
   private TableView<Client> clientTable;
@@ -72,6 +71,7 @@ public class MainAppController {
     editStage.setResizable(false);
 
     editStage.showAndWait();
+    FileUtil.writeClientData(clientData);
   }
 
   @FXML
@@ -92,13 +92,12 @@ public class MainAppController {
     billStage.setUserData(clientTable.getSelectionModel().getSelectedItem());
 
     billStage.showAndWait();
+    FileUtil.writeClientData(clientData);
   }
 
   @FXML
   private void initialize() {
-    if (FileUtil.checkFile()){
-      clientData = FileUtil.readClientData();
-    }
+    if (FileUtil.checkFile()) clientData = FileUtil.readClientData();
     timeColumn.setCellValueFactory(new PropertyValueFactory("time"));
     nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
     numberColumn.setCellValueFactory(new PropertyValueFactory("number"));
@@ -126,7 +125,7 @@ public class MainAppController {
     }
   }
 
-  public static void addClient(String name, Integer number, LocalTime time) {
+  static void addClient(String name, Integer number, LocalTime time) {
     clientData.add(new Client(name, number, time));
   }
 
@@ -136,7 +135,7 @@ public class MainAppController {
       clientData.remove(index);
     } else {
       CheckInput.alertMessage("No Selection","Посетитель не выбран","Пожалуйста выберете посетителся в списке");
-
     }
+    FileUtil.writeClientData(clientData);
   }
 }
