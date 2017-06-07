@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 
 public class MainAppController {
@@ -102,8 +103,6 @@ public class MainAppController {
     nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
     numberColumn.setCellValueFactory(new PropertyValueFactory("number"));
     clientTable.setItems(clientData);
-    clientTable.getSelectionModel().selectedItemProperty().addListener(
-        (observable, oldValue, newValue) -> showClientDetails(newValue));
   }
 
   private void showClientDetails(Client client) {
@@ -113,8 +112,8 @@ public class MainAppController {
       startTime.setText(client.getTime());
       nowTime.setText(client.getCurrTime());
       billLabel.setText(client.getBill().toString());
-      Double all = client.getNumber() * client.getBill();
-      billAll.setText(all.toString());
+      BigDecimal numberBig = new BigDecimal((client.getNumber()));
+      billAll.setText(client.getBill().multiply(numberBig).toString());
     } else {
       nameLabel.setText("");
       numberLabel.setText("");
@@ -123,6 +122,14 @@ public class MainAppController {
       billLabel.setText("");
       billAll.setText("");
     }
+  }
+
+  public void selectClick() throws Exception {
+    showClientDetails(clientTable.getSelectionModel().getSelectedItem());
+  }
+
+  public void selectPress() throws Exception {
+    showClientDetails(clientTable.getSelectionModel().getSelectedItem());
   }
 
   static void addClient(String name, Integer number, LocalTime time) {

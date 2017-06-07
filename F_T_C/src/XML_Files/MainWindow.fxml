@@ -22,7 +22,7 @@
                      <items>
                         <AnchorPane prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <TableView fx:id="clientTable" cacheShape="false" centerShape="false" fixedCellSize="25.0" focusTraversable="false" layoutX="32.0" layoutY="60.0" prefHeight="442.0" prefWidth="296.0" scaleShape="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TableView fx:id="clientTable" cacheHint="SPEED" fixedCellSize="25.0" layoutX="32.0" layoutY="60.0" onMouseClicked="#selectClick" onMousePressed="#selectPress" pickOnBounds="false" prefHeight="442.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <columns>
                                     <TableColumn fx:id="nameColumn" prefWidth="164.0" text="Имя" />
                                     <TableColumn fx:id="numberColumn" prefWidth="62.0" text="Кол-во" />

@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.util.Set;
 
 public class Client implements Serializable {
   public static class Setting {
@@ -62,20 +63,20 @@ public class Client implements Serializable {
     this.time = TimeUtil.getStringTime(time);
   }
 
-  public Double getBill() {
+  public BigDecimal getBill() {
     LocalTime nowTime = LocalTime.now();
-    double Bill;
+    BigDecimal Bill;
     int hour = nowTime.getHour() - startTime.getHour();
     int minute = nowTime.getMinute() - startTime.getMinute();
     if (hour > 3 || hour < 0)
-      Bill = Setting.maxBill;
-    else if ((hour < 1)||(minute < 0))
-      Bill = Setting.firstHour;
+      Bill = new BigDecimal(Setting.maxBill);
+    else if ((hour < 1)||(minute < 0 && hour == 1 ))
+      Bill = new BigDecimal(Setting.firstHour);
     else {
       BigDecimal timeBill= new BigDecimal(hour * 60 + minute);
       BigDecimal coastMinBill = new BigDecimal(Setting.coastMinute);
-      Bill = coastMinBill.multiply(timeBill).setScale(3, BigDecimal.ROUND_DOWN).doubleValue();
+      Bill = coastMinBill.multiply(timeBill);
     }
-    return Bill;
+    return Bill.setScale(2, BigDecimal.ROUND_DOWN);
   }
 }

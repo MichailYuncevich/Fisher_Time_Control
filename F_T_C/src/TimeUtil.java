@@ -8,7 +8,7 @@ class TimeUtil {
 
   static String getStringCurrTime(LocalTime time) {
     int deffTime = LocalTime.now().toSecondOfDay() - time.toSecondOfDay();
-    return DateTimeFormatter.ofPattern("HH:mm").format(LocalTime.ofSecondOfDay(deffTime));
+    return DateTimeFormatter.ofPattern("HH:mm").format(LocalTime.ofSecondOfDay(Math.abs(deffTime)));
   }
 
   static String getStringTime(LocalTime time) {

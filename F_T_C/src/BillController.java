@@ -3,6 +3,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.math.BigDecimal;
+
 public class BillController {
   private Client clientBill;
   private int indexClient;
@@ -30,8 +32,8 @@ public class BillController {
       numberLabel.setText(client.getNumber().toString());
       startLabel.setText(client.getTime());
       billLabel.setText(client.getBill().toString());
-      Double all = client.getNumber() * client.getBill();
-      billAll.setText(all.toString());
+      BigDecimal numberBig = new BigDecimal((client.getNumber()));
+      billAll.setText(client.getBill().multiply(numberBig).toString());
     } else {
       nameLabel.setText("");
       numberLabel.setText("");
