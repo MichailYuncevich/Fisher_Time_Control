@@ -64,16 +64,14 @@ public class Client implements Serializable {
   }
 
   public BigDecimal getBill() {
-    LocalTime nowTime = LocalTime.now();
     BigDecimal Bill;
-    int hour = nowTime.getHour() - startTime.getHour();
-    int minute = nowTime.getMinute() - startTime.getMinute();
-    if (hour > 3 || hour < 0)
+    LocalTime defLoc = LocalTime.ofSecondOfDay(LocalTime.now().toSecondOfDay() - startTime.toSecondOfDay());
+    if ( defLoc.getHour()>= 4)
       Bill = new BigDecimal(Setting.maxBill);
-    else if ((hour < 1)||(minute < 0 && hour == 1 ))
+    else if (defLoc.getHour() < 1)
       Bill = new BigDecimal(Setting.firstHour);
     else {
-      BigDecimal timeBill= new BigDecimal(hour * 60 + minute);
+      BigDecimal timeBill= new BigDecimal(defLoc.getHour() * 60 + defLoc.getMinute());
       BigDecimal coastMinBill = new BigDecimal(Setting.coastMinute);
       Bill = coastMinBill.multiply(timeBill);
     }
